@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task --list
+
+  build:
+    aliases: [b]
+    desc: Build
+    cmds:
+      - uv run --dev pyinstaller build.spec
+
+  format:
+    aliases: [f]
+    desc: Format the source code
+    cmds:
+      - uv run --dev ruff format .
+      - uv run --dev ruff check . --fix
+
+  lint:
+    aliases: [l]
+    desc: Static analysis
+    cmds:
+      - uv run --dev ruff check .
+      - uv run --dev mypy .
+
+  run:
+    aliases: [r]
+    desc: Run
+    cmds:
+      - uv run python3 ghchecker/ghchecker.py
+
+  test:
+    aliases: [t]
+    desc: Test
+    cmds:
+      - uv run --dev pytest

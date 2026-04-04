@@ -1,0 +1,11 @@
+[project]
+name = "ghchecker"
+version = "0.0.1"
+description = "Notify me when there is a new release on GitHub"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "notify-to-cisco-webex>=0.0.7",
+    "pygithub>=2.9.0",
+    "python-dotenv>=1.2.2",
+]

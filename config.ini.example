@@ -1,0 +1,8 @@
+[mkdocs-material]
+repo = squidfunk/mkdocs-material
+version = 9.7.6
+
+[zensical]
+repo = zensical/zensical
+version = v0.0.31
+
