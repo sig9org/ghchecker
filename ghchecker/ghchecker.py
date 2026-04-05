@@ -2,12 +2,17 @@ import configparser
 import os
 
 from dotenv import load_dotenv
-from github import Github
+from github import Auth, Github
 from notify_to_cisco_webex.notify_to_cisco_webex import Webex, WebexConfig
 
 
 def main():
-    gh = Github()
+    load_dotenv()
+    ghtoken = os.environ.get("GITHUB_TOKEN")
+    if ghtoken is None or ghtoken == "":
+        gh = Github()
+    else:
+        gh = Github(auth=Auth.Token(ghtoken))
     is_update = False
     msg = "### GitHub New Release(s)\n\n"
     cfg = configparser.ConfigParser()
@@ -28,7 +33,6 @@ def main():
         with open("config.ini", "w") as f:
             cfg.write(f)
         try:
-            load_dotenv()
             wcfg = WebexConfig(
                 token=os.environ.get("WEBEX_TOKEN"),
                 dst=os.environ.get("WEBEX_DST"),
