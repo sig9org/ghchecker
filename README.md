@@ -40,3 +40,17 @@ systemctl daemon-reload
 systemctl enable ghchecker.timer
 systemctl start ghchecker.timer
 ```
+
+## Check the service logs
+
+### View the latest logs
+
+```sh
+journalctl -eu ghchecker
+```
+
+### Display logs in real time
+
+```sh
+journalctl -fu ghchecker
+```

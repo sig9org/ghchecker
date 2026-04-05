@@ -10,9 +10,12 @@ def main():
     load_dotenv()
     ghtoken = os.environ.get("GITHUB_TOKEN")
     if ghtoken is None or ghtoken == "":
+        print("Without GitHub Token.")
         gh = Github()
     else:
+        print("With GitHub Token.")
         gh = Github(auth=Auth.Token(ghtoken))
+        gh.get_user().login
     is_update = False
     msg = "### GitHub New Release(s)\n\n"
     cfg = configparser.ConfigParser()
