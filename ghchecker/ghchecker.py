@@ -17,7 +17,7 @@ def main():
         gh = Github(auth=Auth.Token(ghtoken))
         gh.get_user().login
     is_update = False
-    msg = "### GitHub New Release(s)\n\n"
+    msg = ""
     cfg = configparser.ConfigParser()
     cfg.read("config.ini")
     for section in cfg.sections():
@@ -29,7 +29,7 @@ def main():
             newver = releases[0].tag_name
             if oldver != newver:
                 is_update = True
-                msg += f"1. [{section}](https://github.com/{repo}) : [{oldver}](https://github.com/{repo}/releases/tag/{oldver}) ---> [{newver}](https://github.com/{repo}/releases/tag/{newver})\n"
+                msg += f"### [{section}](https://github.com/{repo})\n- [{oldver}](https://github.com/{repo}/releases/tag/{oldver}) ---> [{newver}](https://github.com/{repo}/releases/tag/{newver})\n"
                 cfg.set(section, "version", newver)
 
     if is_update:
