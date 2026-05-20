@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from github import Auth, Github
+from github.GithubException import GithubException, UnknownObjectException
 from notify_to_cisco_webex.notify_to_cisco_webex import Webex, WebexConfig
 
 
@@ -24,13 +25,16 @@ def main():
         repo = cfg[section]["repo"]
         oldver = cfg[section]["version"]
 
-        releases = gh.get_repo(repo).get_releases()
-        if releases.totalCount > 0:
-            newver = releases[0].tag_name
-            if oldver != newver:
-                is_update = True
-                msg += f"### [{section}](https://github.com/{repo})\n- [{oldver}](https://github.com/{repo}/releases/tag/{oldver}) ---> [{newver}](https://github.com/{repo}/releases/tag/{newver})\n"
-                cfg.set(section, "version", newver)
+        try:
+            releases = gh.get_repo(repo).get_releases()
+            if releases.totalCount > 0:
+                newver = releases[0].tag_name
+                if oldver != newver:
+                    is_update = True
+                    msg += f"### [{section}](https://github.com/{repo})\n- [{oldver}](https://github.com/{repo}/releases/tag/{oldver}) ---> [{newver}](https://github.com/{repo}/releases/tag/{newver})\n"
+                    cfg.set(section, "version", newver)
+        except UnknownObjectException:
+            print(f"Error:{repo}")
 
     if is_update:
         with open("config.ini", "w") as f:
